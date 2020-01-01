@@ -12,3 +12,4 @@ tensorflow==2.0.0
 urllib3==1.25.7
 underthesea==1.1.17
 py-stringmatching==0.4.1
+spacy==2.2.2
