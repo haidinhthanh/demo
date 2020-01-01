@@ -3,8 +3,8 @@ import os
 sys.path.append(os.getcwd())
 import hashlib
 import json
-import elasticsearch
-from elasticsearch import helpers
+# import elasticsearch
+# from elasticsearch import helpers
 from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
 from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
 from processor.IrrelevantProcessor.ProcessorByKeyWord import ProcessorByKeyWord
