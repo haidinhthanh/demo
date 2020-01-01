@@ -1,0 +1,1 @@
+{"pipeline": [{"name": "data pipeline 1", "elastic_search_index": "talent-cleaned-e1"},{"name": "data pipeline 2", "elastic_search_index": "talent-cleaned-e2"}]}

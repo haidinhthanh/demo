@@ -1,0 +1,9 @@
+NB model
+Validation accuracy:  0.8471811023622047
+Test accuracy:  0.8346307913234071
+
+BiRnn model:
+Validation accuracy:  0.9017322834645669
+Test accuracy:  0.8472022774796564
+Validation accuracy:  0.9056377952755905
+Test accuracy:  0.8488902325347039
