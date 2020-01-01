@@ -1,11 +1,10 @@
-from keras.layers import Input, Reshape, Bidirectional, Dense, GRU, LSTM
+from keras.layers import Input, Reshape, Bidirectional, Dense, LSTM
 from keras import optimizers
 from keras.models import Model
-from category_classify_naive_bayes import train_model, load_data_train
+from model_train.category_classify_naive_bayes import train_model, load_data_train
 import pickle
 import numpy as np
 from sklearn import preprocessing
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def create_bi_rnn_model():

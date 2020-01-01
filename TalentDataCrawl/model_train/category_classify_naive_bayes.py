@@ -1,9 +1,8 @@
 import pickle
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing, naive_bayes, metrics, svm
-from load_data import load_data_train, load_data_nb
+from sklearn import preprocessing, naive_bayes, metrics
+from model_train.load_data import load_data_nb
 
 
 def train_model(classifier, x_data, y_data, x_test=None, y_test=None, n_epochs=3, is_neural_net=False):

@@ -3,8 +3,8 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import *
 from sklearn.svm import *
-from sklearn.metrics import make_scorer, cohen_kappa_score, accuracy_score
-from load_data import load_data_train
+from sklearn.metrics import make_scorer, cohen_kappa_score
+from model_train.load_data import load_data_train
 from scipy import stats
 
 
