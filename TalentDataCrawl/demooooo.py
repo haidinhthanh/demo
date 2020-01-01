@@ -1,7 +1,5 @@
 import hashlib
 import json
-import elasticsearch
-from elasticsearch import helpers
 from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
 from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
 from processor.IrrelevantProcessor.ProcessorByKeyWord import ProcessorByKeyWord
@@ -15,45 +13,6 @@ import time
 import gc
 import tensorflow as tf
 
-
-def create_index(index, index_id, new_item):
-    try:
-        actions = []
-        doc = {
-            '_index': index,
-            '_id': index_id,
-            '_source': dict(new_item)
-        }
-        actions.append(doc)
-        server_elastic_search = local_elastic()
-        helpers.bulk(server_elastic_search, actions, chunk_size=1000, request_timeout=200)
-        time.sleep(3)
-        del server_elastic_search
-        del doc
-        del actions
-        gc.collect()
-    except elasticsearch.exceptions.NotFoundError:
-        mappingElasticSearch = MappingElasticSearch()
-        mappingElasticSearch.mappingIndicesToHost(index=index, host=local_elastic())
-
-
-def process_news(item, pipeline):
-    print("runing process")
-    new_item = pipeline.process(item)
-    print(new_item)
-    if "processor_irrelevant" in new_item and "processor_duplicate" in new_item:
-        if new_item["processor_irrelevant"] == "related" and new_item["processor_duplicate"] == "not duplicate":
-            print("indexing..................")
-            index_id = hashlib.md5(str(new_item['url']).encode('utf-8')).hexdigest()
-            new_item["indexed_date"] = get_instance_time_iso_format()
-            # server_elastic().index(index="talent-cleaned-e1", id=index_id, body=dict(new_item))
-            create_index("talent-cleaned-e1", index_id, new_item)
-        else:
-            print("not indexing because not valid.............")
-    else:
-        print("not indexing because not enough field.............")
-    print("==================================================================================================")
-    return new_item
 
 if __name__ == "__main__":
     # no_crawled_news = ElasticSearchUtils.getNumOfCrawledNewsInOneDay(local_elastic(), "talent-crawled")
