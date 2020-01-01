@@ -14,7 +14,9 @@ from comon.constant import local_elastic, server_elastic
 import time
 import gc
 import tensorflow as tf
-
+import os
+import sys
+sys.path.append(os.getcwd())
 
 class ProcessorPipeline1:
     def __init__(self):
