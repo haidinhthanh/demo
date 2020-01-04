@@ -3,8 +3,6 @@ import re
 from copy import deepcopy
 from processor.Processor import Processor
 from comon.constant import pattern_search, pattern_key
-from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
-from comon.constant import local_elastic
 import gensim
 
 

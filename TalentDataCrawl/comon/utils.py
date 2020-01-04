@@ -2,7 +2,6 @@ from comon.constant import root_path, system_config
 import os
 import json
 import re
-import datetime
 
 
 def getDomainHadCrawl():

@@ -3,6 +3,7 @@ from tqdm import tqdm
 import gensim
 import os
 import pickle
+from comon.constant import root_path
 
 
 def load_data_train():
@@ -12,12 +13,14 @@ def load_data_train():
     y_test = pickle.load(open('data_train/y_test.pkl', 'rb'))
     return x_data, y_data, x_test, y_test
 
+
 def load_data_nb():
-    x_data = pickle.load(open('data_train/NB classify data/x_data.pkl', 'rb'))
-    y_data = pickle.load(open('data_train/NB classify data/y_data.pkl', 'rb'))
-    x_test = pickle.load(open('data_train/NB classify data/x_test.pkl', 'rb'))
-    y_test = pickle.load(open('data_train/NB classify data/y_test.pkl', 'rb'))
+    x_data = pickle.load(open(os.path.join(root_path, 'data_train/NB classify data/x_data.pkl'), 'rb'))
+    y_data = pickle.load(open(os.path.join(root_path, 'data_train/NB classify data/y_data.pkl'), 'rb'))
+    x_test = pickle.load(open(os.path.join(root_path, 'data_train/NB classify data/x_test.pkl'), 'rb'))
+    y_test = pickle.load(open(os.path.join(root_path, 'data_train/NB classify data/y_test.pkl'), 'rb'))
     return x_data, y_data, x_test, y_test
+
 
 def get_data(folder_path):
     X = []

@@ -5,8 +5,8 @@ import pickle
 import gensim
 import numpy as np
 import os
-from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
-from comon.constant import local_elastic
+from comon.model_preload import bi_rnn
+
 
 class ProcessorByBiRnn(Processor):
     def __init__(self):
@@ -26,7 +26,7 @@ class ProcessorByBiRnn(Processor):
         }
         dir_path = os.path.dirname(os.path.realpath(__file__))
         self.path = dir_path.replace("processor\\CategoryClassifyProcessor", "")
-        self.bi_rnn_model = pickle.load(open(os.path.join(self.path, "model/bi_rnn_model.pkl"), "rb"))
+        self.bi_rnn_model = bi_rnn
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/tf_idf_vec.pkl"), "rb"))
 
     def process(self, item):
@@ -52,5 +52,3 @@ class ProcessorByBiRnn(Processor):
             new_item["processor_category_classify"] = "skipped"
             self.num_skip += 1
             return new_item
-
-

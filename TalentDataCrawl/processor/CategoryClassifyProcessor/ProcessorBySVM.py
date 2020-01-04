@@ -4,27 +4,15 @@ import pickle
 import gensim
 from pyvi import ViTokenizer
 import os
+from comon.model_preload import cate_svm
 
 
 class ProcessorBySVM(Processor):
     def __init__(self):
         Processor.__init__(self)
-        # self.mapping = {
-        #     0: 'Công nghệ',
-        #     1: 'Giáo dục',
-        #     2: 'Giải trí',
-        #     3: 'Khoa học',
-        #     4: 'Kinh tế',
-        #     5: 'Pháp luật',
-        #     6: 'Thế giới',
-        #     7: 'Thể thao',
-        #     8: 'Văn hóa',
-        #     9: 'Xã hội',
-        #     10: 'Y tế'
-        # }
         dir_path = os.path.dirname(os.path.realpath(__file__))
         self.path = dir_path.replace("processor\\CategoryClassifyProcessor", "")
-        self.svm_model = pickle.load(open(os.path.join(self.path, "model/svm_model.pkl"), "rb"))
+        self.svm_model = cate_svm
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/tf_idf_vec.pkl"), "rb"))
 
     def process(self, item):

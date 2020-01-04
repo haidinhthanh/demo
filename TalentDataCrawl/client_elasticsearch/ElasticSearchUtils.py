@@ -1,7 +1,6 @@
 import logging
-import elasticsearch
-from elasticsearch import Elasticsearch
-from comon.constant import local_elastic, server_elastic
+from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
+from comon.constant import create_client_elastic_search
 
 
 class ElasticSearchUtils:
@@ -15,20 +14,24 @@ class ElasticSearchUtils:
 
     # 2015-01-01 00:00:00 now-1d/d
     @staticmethod
-    def getNumOfCrawledNewsInOneDay(host, index):
-        res = host.search(index=index,
-                          body={"query": {
-                              "range": {
-                                  "indexed_date": {
-                                      "gte": "2015-12-10T10:17:07Z",
-                                      "lte": "now/d"
-                                  }
-                              }
-                          }, })
-        return res['hits']['total']['value']
+    def getNumOfCrawledNewsInOneDay(host_type, index):
+        host = create_client_elastic_search(host_type)
+        body = {
+            "query": {
+                "range": {
+                    "indexed_date": {
+                        "gte": "2015-12-10T10:17:07Z",
+                        "lte": "now/d"
+                    }
+                }
+            }
+        }
+        res = host.count(index=index, body=body)
+        return res['count']
 
     @staticmethod
-    def getCrawledNewsFormHostInOneDay(host, index, from_value, size_value):
+    def getCrawledNewsFormHostInOneDay(host_type, index, from_value, size_value):
+        host = create_client_elastic_search(host_type)
         crawled_news = []
         res = host.search(index=index,
                           body={"query": {
@@ -46,71 +49,71 @@ class ElasticSearchUtils:
         return crawled_news
 
     @staticmethod
-    def getAllTalentNewsCrawledFromHost(host, index):
+    def sendCrawledNewsFromHostToHost(from_host_type, to_host_type, from_index, to_index, logger):
+        from_host = create_client_elastic_search(from_host_type)
+        to_host = create_client_elastic_search(to_host_type)
+        if from_host.indices.exists(index=from_index):
+            crawled_news = ElasticSearchUtils.getAllNewsFromHostInOneDay(from_index, from_host_type)
+            if not to_host.indices.exists(index=to_index):
+                MappingElasticSearch.mappingIndicesToHost(to_index, to_host_type)
+                ElasticSearchUtils.settingMaxResultSearch(to_index, to_host_type, 5000000)
+            for hit in crawled_news:
+                if 'images' in hit['_source']:
+                    hit['_source']['images'] = [item for item in hit['_source']['images'] if len(item) < 2000]
+                res = to_host.index(index=to_index, id=hit['_id'], body=hit['_source'])
+                print("Indexed chosen news data processed " + str(res))
+                logger.info("Indexed chosen news data processed " + str(res))
+        else:
+            logger.error(from_index + "not exist in host" + from_host)
+
+    @staticmethod
+    def getNODocOfIndex(host_type, index):
+        host = create_client_elastic_search(host_type)
+        res = host.count(index=index)
+        return res["count"]
+
+    @staticmethod
+    def getAllNewsFromHostInOneDay(index, host_type):
+        no_crawled_news = ElasticSearchUtils.getNumOfCrawledNewsInOneDay(host_type, index)
+        from_new_index = 0
+        size_new_index = 100
+        crawled_news = []
+        while True:
+            if from_new_index > no_crawled_news:
+                break
+            crawled_new = ElasticSearchUtils.getCrawledNewsFormHostInOneDay(host_type, index,
+                                                                            from_new_index, size_new_index)
+            if not crawled_new:
+                break
+            crawled_news += crawled_new
+            from_new_index += size_new_index
+        return crawled_news
+
+    @staticmethod
+    def settingMaxResultSearch(index, host_type, max_result):
+        host = create_client_elastic_search(host_type)
+        body = {
+            "index": {
+                "max_result_window": max_result
+            }
+        }
+        host.indices.put_settings(index=index,
+                                  body=body)
+
+    @staticmethod
+    def getAllTalentNewsFromHost(host_type, index):
         from_value = 0
         size_value = 100
         crawled_news = []
+        host = create_client_elastic_search(host_type)
         while True:
             res = host.search(index=index,
                               body={"query": {"match_all": {}},
                                     "size": size_value,
-                                    "from": from_value},
-                              timeout=90)
+                                    "from": from_value})
             if not res['hits']['hits']:
                 break
             for hit in res['hits']['hits']:
                 crawled_news.append(hit)
             from_value = from_value + size_value
         return crawled_news
-
-    @staticmethod
-    def sendCrawledNewsFromHostToHost(from_host, to_host, from_index, to_index):
-        crawled_news = ElasticSearchUtils.getAllTalentNewsCrawledFromHost(from_host, from_index)
-        for hit in crawled_news:
-            logging.info(hit)
-            res = to_host.index(index=to_index, id=hit['_id'], body=hit['_source'])
-            logging.info("RESPONSE: ", res)
-
-    @staticmethod
-    def sendCleanedNewsFromHostToHost(from_host, to_host, index):
-        crawled_news = ElasticSearchUtils.getAllTalentNewsCleanFromHost(from_host)
-        for hit in crawled_news:
-            logging.info(hit)
-            res = to_host.index(index=index, id=hit['_id'], body=hit['_source'])
-            logging.info("RESPONSE: ", res)
-
-    @staticmethod
-    def getAllTalentNewsCleanFromHost(host, index):
-        try:
-            from_value = 0
-            size_value = 100
-            crawled_news = []
-            while True:
-                res = host.search(index=index,
-                                  body={"query": {"match_all": {}},
-                                        "size": size_value,
-                                        "from": from_value}, )
-                if not res['hits']['hits']:
-                    break
-                for hit in res['hits']['hits']:
-                    crawled_news.append(hit)
-                from_value = from_value + size_value
-            return crawled_news
-        except elasticsearch.exceptions.NotFoundError:
-            ElasticSearchUtils.createIndex(index="talent-cleaned-e1", host=host)
-        return []
-
-    @staticmethod
-    def getNODoc(host, index):
-        res = host.count(index=index)
-        return res["count"]
-
-    @staticmethod
-    def getAllDocFromIndexAndHost(index, host):
-        pass
-#
-# if __name__ == "__main__":
-#     elasticSearchUtils = ElasticSearchUtils()
-#     count = elasticSearchUtils.getNODoc(local_elastic(), "talent-crawled")
-#     elasticSearchUtils.sendCrawledNewsFromHostToHost(local_elastic, sever_elastic(), "talent-crawled", "talent-crawled")
-#

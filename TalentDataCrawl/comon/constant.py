@@ -9,15 +9,14 @@ SERVER_PORT = "9200"
 SERVER_AUTH_USER = "elastic"
 SERVER_AUTH_PASS = "elasticbk"
 
-# local_elastic = client_elastic(hosts=[LOCAL_HOST_NAME], port=LOCAL_PORT, timeout=90)
-# sever_elastic = client_elastic(hosts=[SERVER_HOST_NAME],
-#                                http_auth=(SERVER_AUTH_USER, SERVER_AUTH_PASS),
-#                                port=SERVER_PORT, timeout=90)
+# directory path
 dir_path_comon = os.path.dirname(os.path.realpath(__file__))
 root_path = dir_path_comon.replace("\\comon", "")
 system_config = "system_config.json"
 pipeline_config = "pipeline_config.json"
 
+
+# call local or server elastic search
 
 def local_elastic():
     return client_elastic(hosts=[LOCAL_HOST_NAME], port=LOCAL_PORT, timeout=90)
@@ -29,6 +28,15 @@ def server_elastic():
                           port=SERVER_PORT, timeout=90)
 
 
+def create_client_elastic_search(type):
+    if type == LOCAL_HOST_NAME:
+        return local_elastic()
+    elif type == SERVER_HOST_NAME:
+        return server_elastic()
+    else:
+        return None
+
+# pattern for each key tag
 pattern_search = {
     "Salary": [
         "lương (.*?) (((\d{1,}.)?)+\d{3,}.\d{3,}(-((\d{1,}.)?)+\d{3,}.\d{3,})?)",
@@ -97,3 +105,7 @@ pattern_key = {
             "cơ chế"
         ]
 }
+
+# index of elastic search server
+talent_crawled_index = "talent-crawled"
+talent_cleaned_index = "talent-cleaned"

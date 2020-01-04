@@ -1,7 +1,7 @@
 from processor.Processor import Processor
 import ahocorasick
 from copy import deepcopy
-import gc
+
 
 class ProcessorByKeyWord(Processor):
     def __init__(self):
@@ -41,4 +41,3 @@ class ProcessorByKeyWord(Processor):
             new_item["processor_irrelevant"] = "skipped"
             self.num_skip += 1
             return new_item
-

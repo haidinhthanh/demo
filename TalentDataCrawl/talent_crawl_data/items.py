@@ -3,7 +3,7 @@ from scrapy.loader.processors import Join, MapCompose, TakeFirst, Identity
 
 
 def strip_space(value):
-    return value.strip();
+    return value.strip()
 
 
 class NewspaperItem(scrapy.Item):

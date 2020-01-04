@@ -1,10 +1,12 @@
-from comon.constant import local_elastic, server_elastic
 import logging
+
+from comon.constant import create_client_elastic_search
 
 
 class MappingElasticSearch():
-    def __init__(self):
-        self.mapping = {
+    @staticmethod
+    def mappingIndicesToHost(index, host_type):
+        mapping = {
             "settings": {
                 "analysis": {
                     "analyzer": {
@@ -21,7 +23,7 @@ class MappingElasticSearch():
                         }
                     }
                 }
-            } ,
+            },
             "mappings": {
                 "properties": {
                     "url": {
@@ -57,21 +59,18 @@ class MappingElasticSearch():
                 }
             }
         }
-
-    def mappingIndicesToHost(self, index, host):
+        host = create_client_elastic_search(host_type)
         response = host.indices.create(
             index=index,
-            body=self.mapping,
+            body=mapping,
             ignore=400
         )
+        print("done")
         if 'acknowledged' in response:
             if response['acknowledged']:
-                logging.info("INDEX MAPPING SUCCESS FOR INDEX:", response['index'])
+                print("INDEX MAPPING SUCCESS FOR INDEX:", response['index'])
         elif 'error' in response:
-            logging.error("ERROR:", response['error']['root_cause'])
-            logging.error("TYPE:", response['error']['type'])
-        logging.info(response)
+            print("ERROR:", response['error']['root_cause'])
+            print("TYPE:", response['error']['type'])
+        print(response)
 
-# if __name__ =="__main__":
-#     mappingElasticSearch = MappingElasticSearch()
-#     mappingElasticSearch.mappingIndicesToHost("talent-cleaned-e1", local_elastic())

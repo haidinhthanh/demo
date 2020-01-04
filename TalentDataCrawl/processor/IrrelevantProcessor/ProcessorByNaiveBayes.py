@@ -4,6 +4,7 @@ import pickle
 import gensim
 from pyvi import ViTokenizer
 import os
+from comon.model_preload import irr_naive_bayes
 
 
 class ProcessorByNaiveBayes(Processor):
@@ -15,12 +16,11 @@ class ProcessorByNaiveBayes(Processor):
         }
         dir_path = os.path.dirname(os.path.realpath(__file__))
         self.path = dir_path.replace("processor\\IrrelevantProcessor", "")
-        self.nb_model = pickle.load(open(os.path.join(self.path, "model/NB_relevant/naive_bayes_model.pkl"), "rb"))
+        self.nb_model = irr_naive_bayes
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/NB_relevant/tf_idf_vec.pkl"), "rb"))
 
     def process(self, item):
         new_item = deepcopy(item)
-
         if 'content' in item and 'title' in item:
             if 'summary' in item:
                 text = item['title'] + "." + item['summary'] + "." + item['content']
