@@ -42,7 +42,7 @@ def process_news(item, pipeline, host_type, logger):
             print("indexing..................")
             index_id = hashlib.md5(str(new_item['url']).encode('utf-8')).hexdigest()
             new_item["indexed_date"] = get_instance_time_iso_format()
-            create_index(index, index_id, new_item, host_type, logger)
+            # create_index(index, index_id, new_item, host_type, logger)
         else:
             logger.info("not index " + json.dumps(new_item))
             print("not indexing because not valid.............")
