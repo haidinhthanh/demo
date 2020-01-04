@@ -1,4 +1,5 @@
-from comon.constant import root_path, system_config
+from const_path import root_path
+from comon.constant import system_config
 import os
 import json
 import re

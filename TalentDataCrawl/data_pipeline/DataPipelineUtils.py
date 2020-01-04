@@ -1,4 +1,5 @@
-from comon.constant import create_client_elastic_search, root_path
+from const_path import root_path
+from comon.constant import create_client_elastic_search
 import elasticsearch
 from elasticsearch import helpers
 import time

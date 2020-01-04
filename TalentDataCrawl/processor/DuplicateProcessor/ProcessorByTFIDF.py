@@ -6,11 +6,10 @@ import math
 from copy import deepcopy
 from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
 from comon.constant import LOCAL_HOST_NAME, SERVER_HOST_NAME
-import gc
 
 
 class ProcessorByTFIDF(Processor):
-    def __init__(self,  index_elasic, num_of_fields=3, jaccard_measure=0.8, similarity_threshold=0.9):
+    def __init__(self, index_elasic, num_of_fields=3, jaccard_measure=0.8, similarity_threshold=0.9):
         Processor.__init__(self)
         self.num_of_fields = num_of_fields
         self.jaccard_measure = jaccard_measure
@@ -85,7 +84,8 @@ class ProcessorByTFIDF(Processor):
             clean_news = []
             for item in clean_news_search:
                 if "summary" in item["_source"].keys():
-                    clean_news.append([item["_source"]["title"], item["_source"]["summary"], item["_source"]["content"]])
+                    clean_news.append(
+                        [item["_source"]["title"], item["_source"]["summary"], item["_source"]["content"]])
                 else:
                     clean_news.append([item["_source"]["title"], item["_source"]["title"], item["_source"]["content"]])
             for new in clean_news:

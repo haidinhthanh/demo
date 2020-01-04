@@ -7,10 +7,9 @@ from pyvi import ViTokenizer
 from collections import Counter
 import os
 import json
+from const_path import root_path, source_path
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-root_path = dir_path.replace("\\extract_xpath", "")
-source_path = dir_path.replace("\\extract_xpath", "\\url")
 bi_rnn = pickle.load(open(os.path.join(dir_path, 'bi_rnn_model_6.pkl'), 'rb'))
 tf_idf_vec = pickle.load(open(os.path.join(dir_path, "tf_idf_vec_5.pkl"), "rb"))
 

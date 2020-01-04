@@ -1,4 +1,4 @@
-from comon.constant import root_path
+from const_path import root_path
 import os
 import json
 

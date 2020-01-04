@@ -6,6 +6,7 @@ import gensim
 import numpy as np
 import os
 from comon.model_preload import bi_rnn
+from const_path import root_path
 
 
 class ProcessorByBiRnn(Processor):
@@ -24,8 +25,7 @@ class ProcessorByBiRnn(Processor):
             9: 'Xã hội',
             10: 'Y tế'
         }
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.path = dir_path.replace("processor\\CategoryClassifyProcessor", "")
+        self.path = root_path
         self.bi_rnn_model = bi_rnn
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/tf_idf_vec.pkl"), "rb"))
 

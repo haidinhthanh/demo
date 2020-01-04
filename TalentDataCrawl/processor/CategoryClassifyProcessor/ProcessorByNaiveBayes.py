@@ -4,6 +4,7 @@ import pickle
 import gensim
 from pyvi import ViTokenizer
 import os
+from const_path import root_path
 
 
 class ProcessorByNaiveBayes(Processor):
@@ -22,8 +23,7 @@ class ProcessorByNaiveBayes(Processor):
             9: 'Xã hội',
             10: 'Y tế'
         }
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.path = dir_path.replace("processor\\CategoryClassifyProcessor", "")
+        self.path = root_path
         self.nb_model = pickle.load(open(os.path.join(self.path, "model/naive_bayes_model.pkl"), "rb"))
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/tf_idf_vec.pkl"), "rb"))
 

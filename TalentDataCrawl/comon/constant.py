@@ -10,11 +10,8 @@ SERVER_AUTH_USER = "elastic"
 SERVER_AUTH_PASS = "elasticbk"
 
 # directory path
-dir_path_comon = os.path.dirname(os.path.realpath(__file__))
-root_path = dir_path_comon.replace("\\comon", "")
 system_config = "system_config.json"
 pipeline_config = "pipeline_config.json"
-
 
 # call local or server elastic search
 

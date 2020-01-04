@@ -3,13 +3,14 @@ import spacy
 from copy import deepcopy
 import os
 import json
+from const_path import root_path
 
 
 class ProcessorBySpacyModel(Processor):
     def __init__(self):
         Processor.__init__(self)
         self.loc_data = {}
-        dir_path = os.path.dirname(os.path.realpath(__file__)).replace("processor\\LocationExtractProcessor", "")
+        dir_path = root_path
         self.city_nlp = spacy.load(os.path.join(dir_path, "model/city_ner"))
         self.nation_nlp = spacy.load(os.path.join(dir_path, "model/nation_ner"))
         self.province_nlp = spacy.load(os.path.join(dir_path, "model/province_ner"))

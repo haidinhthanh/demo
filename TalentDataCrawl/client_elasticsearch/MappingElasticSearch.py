@@ -1,5 +1,3 @@
-import logging
-
 from comon.constant import create_client_elastic_search
 
 

@@ -5,13 +5,13 @@ import gensim
 from pyvi import ViTokenizer
 import os
 from comon.model_preload import cate_svm
+from const_path import root_path
 
 
 class ProcessorBySVM(Processor):
     def __init__(self):
         Processor.__init__(self)
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.path = dir_path.replace("processor\\CategoryClassifyProcessor", "")
+        self.path = root_path
         self.svm_model = cate_svm
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/tf_idf_vec.pkl"), "rb"))
 

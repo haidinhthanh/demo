@@ -5,6 +5,7 @@ import gensim
 from pyvi import ViTokenizer
 import os
 from comon.model_preload import irr_naive_bayes
+from const_path import root_path
 
 
 class ProcessorByNaiveBayes(Processor):
@@ -14,8 +15,7 @@ class ProcessorByNaiveBayes(Processor):
             0: 'irrelevant',
             1: 'related'
         }
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.path = dir_path.replace("processor\\IrrelevantProcessor", "")
+        self.path = root_path
         self.nb_model = irr_naive_bayes
         self.tf_idf_vec = pickle.load(open(os.path.join(self.path, "model/NB_relevant/tf_idf_vec.pkl"), "rb"))
 

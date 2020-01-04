@@ -1,4 +1,3 @@
-import logging
 from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
 from comon.constant import create_client_elastic_search
 

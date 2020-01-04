@@ -1,4 +1,5 @@
-from comon.constant import root_path, pipeline_config, talent_cleaned_index, LOCAL_HOST_NAME, SERVER_HOST_NAME
+from const_path import root_path
+from comon.constant import pipeline_config, talent_cleaned_index, LOCAL_HOST_NAME, SERVER_HOST_NAME
 from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
 import os
 import json
