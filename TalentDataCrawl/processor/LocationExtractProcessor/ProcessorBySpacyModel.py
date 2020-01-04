@@ -47,9 +47,7 @@ class ProcessorBySpacyModel(Processor):
             return new_item
 
     def initLocData(self):
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        path = dir_path.replace("processor\\LocationExtractProcessor", "")
-        path = os.path.join(path, "data_train/DataLocation")
+        path = os.path.join(root_path, "data_train/DataLocation")
         files = ["cities.jl", "nations.jl", "provinces.jl"]
         for file in files:
             with open(os.path.join(path, file), "r", encoding="UTF-8") as f:
