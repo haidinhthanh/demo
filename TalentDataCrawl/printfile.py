@@ -1,1 +1,3 @@
-print("1234567")
+from datetime import datetime
+myFile = open('append.txt', 'a')
+myFile.write('\nAccessed on ' + str(datetime.now()))

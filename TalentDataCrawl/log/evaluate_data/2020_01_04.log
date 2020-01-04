@@ -1,0 +1,7 @@
+2020-01-04 16:53:01,787,787,evaluate data pipeline  INFO data pipeline 1
+2020-01-04 16:53:01,975,975,evaluate data pipeline  INFO F1-score process irrelevant 0.0
+2020-01-04 16:53:01,975,975,evaluate data pipeline  INFO F1-score process classify 0.8000000000000002
+2020-01-04 16:53:01,975,975,evaluate data pipeline  INFO data pipeline 2
+2020-01-04 16:53:02,147,147,evaluate data pipeline  INFO F1-score process irrelevant 0.4000000000000001
+2020-01-04 16:53:02,147,147,evaluate data pipeline  INFO F1-score process classify 1.0
+2020-01-04 16:53:02,147,147,evaluate data pipeline  INFO data pipeline chosen data pipeline 2
