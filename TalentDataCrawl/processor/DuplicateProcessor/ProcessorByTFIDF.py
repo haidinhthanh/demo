@@ -77,7 +77,7 @@ class ProcessorByTFIDF(Processor):
         return flag
 
     def initialization(self):
-        server_elastic_search = LOCAL_HOST_NAME
+        server_elastic_search = SERVER_HOST_NAME
         clean_news_search = ElasticSearchUtils.getAllTalentNewsFromHost(server_elastic_search, self.index)
         if self.last_size != len(clean_news_search):
             self.last_size = len(clean_news_search)
