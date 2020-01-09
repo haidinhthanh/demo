@@ -122,7 +122,7 @@ class EvaluatePipeline:
         self.resetDataProcessedPipeline()
 
     def save_highest_acc_news_processed(self, elastic_search_index):
-        ElasticSearchUtils.sendCrawledNewsFromHostToHost(LOCAL_HOST_NAME, LOCAL_HOST_NAME,
+        ElasticSearchUtils.sendCrawledNewsFromHostToHost(SERVER_HOST_NAME, SERVER_HOST_NAME,
                                                          elastic_search_index, talent_cleaned_index, self.logger)
 
 
