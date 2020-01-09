@@ -43,6 +43,14 @@ class LogService:
         log_name = os.path.join(self.log_evaluate, str(getCurrentTime()) + ".log")
         return self.setup_logger("evaluate data pipeline ", log_name)
 
+    def configLogCrawlLink(self):
+        log_name = os.path.join(self.log_crawl_link, str(getCurrentTime()) + ".log")
+        return self.setup_logger("crawl link scrapy", log_name)
+
+    def configLogCrawlNews(self):
+        log_name = os.path.join(self.log_crawl_news, str(getCurrentTime()) + ".log")
+        return self.setup_logger("crawl news scrapy", log_name)
+
     def setup_logger(self, name, log_file, level=logging.DEBUG):
         handler = logging.FileHandler(log_file)
         handler.setFormatter(self.formatter)
@@ -52,3 +60,4 @@ class LogService:
         logger.addHandler(handler)
 
         return logger
+

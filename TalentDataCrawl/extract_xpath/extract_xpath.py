@@ -273,7 +273,7 @@ def extract_xpath(url):
             predict = bi_rnn.predict(text_tf_idf)[0]
             max_element = np.amax(predict)
             result = np.where(predict == max_element)
-            print([item[0], item[1], mapping[result[0][0]]])
+            # print([item[0], item[1], mapping[result[0][0]]])
             doc_classify.append([item[0], item[1], mapping[result[0][0]], index])
             index += 1
             if mapping[result[0][0]] == "title" \
@@ -293,7 +293,7 @@ def extract_xpath(url):
         summary_xpath, content_xpath = getContentXpath(news_content_xpath)
         title_xpath = getTitleXpath(title_xpath)
         img_xpath = getImageXpath(img_xpath, content_xpath, doc_classify)
-        print((published_date_xpath, source_xpath, title_xpath, summary_xpath, content_xpath, img_xpath))
+        # print((published_date_xpath, source_xpath, title_xpath, summary_xpath, content_xpath, img_xpath))
         return published_date_xpath, source_xpath, title_xpath, summary_xpath, content_xpath, img_xpath
     except Exception:
         return "empty", "empty", "empty", "empty", "empty", "empty"
@@ -374,7 +374,7 @@ def longestSubstringFinder(string1, string2):
     return "//" + "/".join(reversed(answer))
 
 
-def getXpathFromNewDomain(domain):
+def getXpathFromNewDomain(domain, logger):
     urls = getDemoUrl(domain)
     published_date_xpath, source_path, new_title_xpath, summary_xpath, img_xpath, content_xpath = cal_xpath_from_urls(
         urls)
@@ -390,8 +390,7 @@ def getXpathFromNewDomain(domain):
         "domain": domain,
         "path": dict_xpath_domain
     }
-    print("config")
-    print(domain_config_path)
+    logger.info("extract xpath from " + domain + "\n" + json.dumps(domain_config_path))
     with open(os.path.join(root_path, "system_config.json"), "r") as f:
         config = json.load(f)
         config["domain"].append(domain)

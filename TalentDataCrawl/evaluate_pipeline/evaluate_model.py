@@ -103,12 +103,9 @@ class EvaluatePipeline:
         return average_f1["micro"]
 
     def evaluate_each_pipeline(self, news_arr):
-        print(news_arr["name"])
         self.logger.info(news_arr["name"])
         score_f1_irrelevant = self.evaluate_irrelevant(news_arr)
         score_f1_cate_classify = self.evaluate_classify_content(news_arr)
-        print("F1-score process irrelevant " + str(score_f1_irrelevant))
-        print("F1-score process classify " + str(score_f1_cate_classify))
         self.logger.info("F1-score process irrelevant " + str(score_f1_irrelevant))
         self.logger.info("F1-score process classify " + str(score_f1_cate_classify))
         return score_f1_irrelevant + score_f1_cate_classify
@@ -120,7 +117,6 @@ class EvaluatePipeline:
         max_score = max(pipelines_score)
         index = pipelines_score.index(max_score)
         max_score_pipeline = self.news_processed_pipeline[index]
-        print("data pipeline chosen " + max_score_pipeline["name"])
         self.logger.info("data pipeline chosen " + max_score_pipeline["name"])
         self.save_highest_acc_news_processed(max_score_pipeline["index"])
         self.resetDataProcessedPipeline()

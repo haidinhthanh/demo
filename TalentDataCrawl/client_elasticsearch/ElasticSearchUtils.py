@@ -1,5 +1,5 @@
 from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
-from comon.constant import create_client_elastic_search
+from comon.constant import create_client_elastic_search, SERVER_HOST_NAME,LOCAL_HOST_NAME
 
 
 class ElasticSearchUtils:
@@ -19,7 +19,7 @@ class ElasticSearchUtils:
             "query": {
                 "range": {
                     "indexed_date": {
-                        "gte": "2015-12-10T10:17:07Z",
+                        "gte": "now-1d/d",
                         "lte": "now/d"
                     }
                 }
@@ -36,7 +36,7 @@ class ElasticSearchUtils:
                           body={"query": {
                               "range": {
                                   "indexed_date": {
-                                      "gte": "2015-12-10T10:17:07Z",
+                                      "gte": "now-1d/d",
                                       "lte": "now/d"
                                   }
                               }
@@ -60,10 +60,11 @@ class ElasticSearchUtils:
                 if 'images' in hit['_source']:
                     hit['_source']['images'] = [item for item in hit['_source']['images'] if len(item) < 2000]
                 res = to_host.index(index=to_index, id=hit['_id'], body=hit['_source'])
-                print("Indexed chosen news data processed " + str(res))
-                logger.info("Indexed chosen news data processed " + str(res))
+                print(res)
+                # logger.info("Indexed chosen news data processed " + str(res))
         else:
-            logger.error(from_index + "not exist in host" + from_host)
+            pass
+            # logger.error(from_index + "not exist in host" + from_host)
 
     @staticmethod
     def getNODocOfIndex(host_type, index):
@@ -116,3 +117,9 @@ class ElasticSearchUtils:
                 crawled_news.append(hit)
             from_value = from_value + size_value
         return crawled_news
+
+#
+# if __name__ == "__main__":
+#
+#     ElasticSearchUtils.sendCrawledNewsFromHostToHost(from_host_type=LOCAL_HOST_NAME, to_host_type=SERVER_HOST_NAME,
+#                                                      from_index="talent-cleaned-e1", to_index="talent-cleaned-e1",logger=None)

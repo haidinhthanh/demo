@@ -1,11 +1,14 @@
 import scrapy
 import json
-from ..items import NewspaperItem
+
 from scrapy.loader import ItemLoader
+
+from talent_crawl_data.items import NewspaperItem
 from talent_crawl_data.utils.FileUtils import find_last_index, get_config_last_index, \
-    get_last_crawl_index, get_start_urls
-from comon.utils import checkDomainHadCrawl, getMapXpath, getDomainHadCrawl, getTimeIso
+    get_start_urls, get_last_crawl_index
+from comon.utils import checkDomainHadCrawl, getDomainHadCrawl, getMapXpath, getTimeIso
 from extract_xpath.extract_xpath import getXpathFromNewDomain
+from log.log_service import LogService
 
 FILES_NAME = [
     "url/nguoitai.url",
@@ -13,7 +16,7 @@ FILES_NAME = [
     "url/nhanlucchatluong.url",
     "url/nhantai.url"
 ]
-NUM_STEP_URL = 17000  # số url lấy mỗi file
+NUM_STEP_URL = 1  # số url lấy mỗi file
 
 
 class NewspapersSpider(scrapy.Spider):
@@ -24,6 +27,7 @@ class NewspapersSpider(scrapy.Spider):
     def __init__(self):
         with open('url/index.json', 'r') as f:
             config_index = json.load(f)
+        self.crawl_logger = LogService().configLogCrawlNews()
         for file_name in FILES_NAME:
             file_config = get_config_last_index(config_index['config'], file_name)
             start_index = int(file_config[file_name]) + 1
@@ -35,7 +39,7 @@ class NewspapersSpider(scrapy.Spider):
             for url in urls:
                 domain = url.split("/")[2]
                 if not checkDomainHadCrawl(domain):
-                    getXpathFromNewDomain(domain)
+                    getXpathFromNewDomain(domain, self.crawl_logger)
             self.start_urls = self.start_urls + urls
 
             # đánh dấu vị trí đã lấy url đến
@@ -53,33 +57,37 @@ class NewspapersSpider(scrapy.Spider):
         map_xpath = self.mapDomainToXpath(domain)
         title, summary, content, source, published_date, images = [], [], [], [], [], []
         # dựa vào xpath lấy dữ liệu
-        for xpath in map_xpath["title"]:
-            value = response.xpath(xpath).get()
-            if value is not None:
-                title.append(value)
+        if map_xpath["title"] != "empty":
+            for xpath in map_xpath["title"]:
+                value = response.xpath(xpath).get()
+                if value is not None:
+                    title.append(value)
         if map_xpath["summary"] != "empty":
             for xpath in map_xpath["summary"]:
                 value = response.xpath(xpath).get()
                 if value is not None:
                     summary.append(value)
-        for xpath in map_xpath["content"]:
-            value = response.xpath(xpath).getall()
-            if value is not None:
-                content += value
+        if map_xpath["content"] != "empty":
+            for xpath in map_xpath["content"]:
+                value = response.xpath(xpath).getall()
+                if value is not None:
+                    content += value
         if map_xpath["source"] != "empty":
             for xpath in map_xpath["source"]:
                 value = response.xpath(xpath).get()
                 if value is not None:
                     source.append(value)
-        for xpath in map_xpath["published_date"]:
-            value = response.xpath(xpath).get()
-            if value is not None:
-                published_date.append(getTimeIso(value))
-        for xpath in map_xpath["images"]:
-            value = response.xpath(xpath).getall()
-            value = [item for item in value if "data:image/gif" not in item]
-            if value is not None or not value:
-                images += value
+        if map_xpath["published_date"] != "empty":
+            for xpath in map_xpath["published_date"]:
+                value = response.xpath(xpath).get()
+                if value is not None:
+                    published_date.append(getTimeIso(value))
+        if map_xpath["images"] != "empty":
+            for xpath in map_xpath["images"]:
+                value = response.xpath(xpath).getall()
+                value = [item for item in value if "data:image/gif" not in item]
+                if value is not None or not value:
+                    images += value
         title = [item for item in list(dict.fromkeys(title)) if item != ""]
         summary = [item for item in list(dict.fromkeys(summary)) if item != ""]
         content = [item for item in list(dict.fromkeys(content)) if item != ""]

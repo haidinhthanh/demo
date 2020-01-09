@@ -3,23 +3,17 @@ from bs4 import BeautifulSoup
 import os
 
 
-def append_file(urls, file_path, index):
+def append_file(urls, file_path, index, logger):
     with open(file_path, 'a+') as f:
         for url in urls:
-            # print("tag" in url['link'])
-            # print(url['link'] in ['https://baomoi.com/', 'https://baomoi.com'] )
-            # print("/c/" in url['link'].replace("https://baomoi.com", "").replace(".epi", ""))
-            # print("=https://baomoi.com/" in url['link'])
-            # print("/longform/" in url['link'])
-            # print("+_+++++++++++++++++++++++++")
             if "tag" in url['link'] \
                     or url['link'] in ['https://baomoi.com/', 'https://baomoi.com'] \
-                    or "/c/" in url['link'].replace("https://baomoi.com", "").replace(".epi", "") \
-                    or "=https://baomoi.com/" in url['link']\
+                    or ("/c/" not in url['link'].replace("https://baomoi.com", "").replace(".epi", "") and "baomoi.com" in url["link"] )\
+                    or "=https://baomoi.com/" in url['link'] \
                     or "/longform/" in url['link']:
                 continue
             f.write(str(index) + " " + str(url['link']) + "\n")
-            print("write" + str(url['link']))
+            logger.info("add new url " + str(url['link']) + " to " + file_path)
             index += 1
     return index
 

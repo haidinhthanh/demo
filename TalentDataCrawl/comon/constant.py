@@ -13,6 +13,7 @@ SERVER_AUTH_PASS = "elasticbk"
 system_config = "system_config.json"
 pipeline_config = "pipeline_config.json"
 
+
 # call local or server elastic search
 
 def local_elastic():
@@ -32,6 +33,7 @@ def create_client_elastic_search(type):
         return server_elastic()
     else:
         return None
+
 
 # pattern for each key tag
 pattern_search = {

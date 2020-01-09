@@ -1,6 +1,7 @@
 import scrapy
 import time
 from talent_crawl_data.utils.CrawlUtils import initial_index, scrape_google, filter_exist_url, append_file, scrape_bing
+from log.log_service import LogService
 
 KEY_STORE = [
     {'keyword': "nhân tài", 'file_store': 'url/nhantai.url'},
@@ -43,6 +44,7 @@ class TalentUrlSpider(scrapy.Spider):
                             }
                            for file in self.key_store]
         self.domain = domain
+        self.crawl_log = LogService().configLogCrawlLink()
 
     def parse(self, response):
         keywords = [keyword['keyword'] for keyword in KEY_STORE]
@@ -53,22 +55,21 @@ class TalentUrlSpider(scrapy.Spider):
                 for result in results:
                     datas.append(result)
             except Exception as e:
-                print(e)
+                self.logger.info(e)
             finally:
                 time.sleep(10)
-        print(datas)
         for keyword in keywords:
             file_store = [file['file_store'] for file in self.key_store if (file['keyword'] == keyword)][0]
             last_index = [file['last_index'] for file in self.last_index if (file['keyword'] == keyword)][0]
 
             # lọc các url đã tồn tại và lưu các url mới
             data_keyword = [data for data in datas if (data['keyword'] == 'site:'+self.domain+' '+keyword)]
-            print(file_store)
-            print(data_keyword)
             filter_data = filter_exist_url(data_keyword, file_store)
-            for item in filter_data:
-                print(item)
-            last_index = append_file(filter_data, file_store, last_index)
+            # print("filter")
+            # print(len(filter_data))
+            # for item in filter_data:
+            #     print(item)
+            last_index = append_file(filter_data, file_store, last_index, self.crawl_log)
 
             # đánh lại chỉ mục sau khi lưu
             for file in self.last_index:

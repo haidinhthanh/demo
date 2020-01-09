@@ -10,7 +10,6 @@ import hashlib
 from talent_crawl_data.utils.TimeUtils import get_instance_time_iso_format
 import os
 
-
 def create_index(index, index_id, new_item, host_type, logger):
     try:
         server_elastic_search = create_client_elastic_search(host_type)
@@ -40,18 +39,18 @@ def process_news(item, pipeline, host_type, logger):
     new_item = pipeline.process(item)
     if "processor_irrelevant" in new_item and "processor_duplicate" in new_item:
         if new_item["processor_irrelevant"] == "related" and new_item["processor_duplicate"] == "not duplicate":
-            print("indexing..................")
+            logger.info("indexing......." + json.dumps(new_item))
             index_id = hashlib.md5(str(new_item['url']).encode('utf-8')).hexdigest()
             new_item["indexed_date"] = get_instance_time_iso_format()
-            # create_index(index, index_id, new_item, host_type, logger)
+            create_index(index, index_id, new_item, host_type, logger)
         else:
             logger.info("not index " + json.dumps(new_item))
-            print("not indexing because not valid.............")
+            logger.info("not indexing because not valid.............")
     else:
         logger.info("not index " + json.dumps(new_item))
-        print("not indexing because not enough field.............")
+        logger.info("not indexing because not enough field.............")
     writeProcessedData(name_file, new_item)
-    print("==================================================================================================")
+    logger.info("==================================================================================================")
     return new_item
 
 
