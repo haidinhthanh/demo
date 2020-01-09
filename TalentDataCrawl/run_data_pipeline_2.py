@@ -44,7 +44,7 @@ if __name__ == "__main__":
                 gc.collect()
                 break
             else:
-                for item in crawled_source_news[i:i + 5]:
+                for item in crawled_source_news[i:i + 3]:
                     logger.info("Process url: " + str(item["url"]))
                     new_item = process_news(item, pipeline, host_type, logger)
                     processed_items.append(new_item)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 del processed_items
                 del new_item
                 gc.collect()
-                i += 5
+                i += 3
         logger = LogService().configLogDataPipelineSummary(pipeline_name)
         logger.info("number of crawled news in day :" + str(no_news_input))
         logger.info("number of crawled news processed :" + str(no_news_process))
