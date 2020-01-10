@@ -29,6 +29,6 @@ with open(os.path.join(root_path,"domain.json"), "r") as f:
         job4 = cron.new(command=command4)
 
 command5 = "00 02 * * * cd /home/haidt/project/demo/TalentDataCrawl && scrapy crawl NewspaperSpider"
-job5 = cron.new(command=command2)
+job5 = cron.new(command=command5)
 
 cron.write()
