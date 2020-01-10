@@ -102,24 +102,33 @@ class ElasticSearchUtils:
 
     @staticmethod
     def getAllTalentNewsFromHost(host_type, index):
-        from_value = 0
-        size_value = 100
-        crawled_news = []
-        host = create_client_elastic_search(host_type)
-        while True:
-            res = host.search(index=index,
-                              body={"query": {"match_all": {}},
-                                    "size": size_value,
-                                    "from": from_value})
-            if not res['hits']['hits']:
-                break
-            for hit in res['hits']['hits']:
-                crawled_news.append(hit)
-            from_value = from_value + size_value
-        return crawled_news
+        try:
+            from_value = 0
+            size_value = 100
+            crawled_news = []
+            host = create_client_elastic_search(host_type)
+            while True:
+                res = host.search(index=index,
+                                  body={"query": {"match_all": {}},
+                                        "size": size_value,
+                                        "from": from_value})
+                if not res['hits']['hits']:
+                    break
+                for hit in res['hits']['hits']:
+                    crawled_news.append(hit)
+                from_value = from_value + size_value
+            return crawled_news
+        except Exception:
+            MappingElasticSearch.mappingIndicesToHost(index=index,
+                                                      host_type=host_type)
+            ElasticSearchUtils.settingMaxResultSearch(index=index,
+                                                      host_type=host_type, max_result=5000000)
+            return []
 
 #
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    ElasticSearchUtils.settingMaxResultSearch(index="talent-crawled", host_type=LOCAL_HOST_NAME,
+                                              max_result=5000000)
 #
 #     ElasticSearchUtils.sendCrawledNewsFromHostToHost(from_host_type=LOCAL_HOST_NAME, to_host_type=SERVER_HOST_NAME,
 #                                                      from_index="talent-cleaned-e1", to_index="talent-cleaned-e1",logger=None)

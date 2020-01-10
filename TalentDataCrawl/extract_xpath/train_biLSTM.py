@@ -39,7 +39,7 @@ def create_bi_rnn_model():
     layer = Dense(512, activation='relu')(layer)
     layer = Dense(512, activation='relu')(layer)
     layer = Dense(128, activation='relu')(layer)
-    output_layer = Dense(11, activation='softmax')(layer)
+    output_layer = Dense(6, activation='softmax')(layer)
     classifier = Model(input_layer, output_layer)
     classifier.compile(optimizer=optimizers.Adam(), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     return classifier

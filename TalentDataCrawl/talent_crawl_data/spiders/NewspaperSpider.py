@@ -16,7 +16,7 @@ FILES_NAME = [
     "url/nhanlucchatluong.url",
     "url/nhantai.url"
 ]
-NUM_STEP_URL = 1  # số url lấy mỗi file
+NUM_STEP_URL = 10000  # số url lấy mỗi file
 
 
 class NewspapersSpider(scrapy.Spider):

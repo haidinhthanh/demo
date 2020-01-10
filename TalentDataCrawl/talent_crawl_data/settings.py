@@ -66,7 +66,7 @@ NEWSPIDER_MODULE = 'talent_crawl_data.spiders'
 ITEM_PIPELINES = {
    'talent_crawl_data.pipelines.TalentCrawledDataPipeline': 400,
 }
-ELASTIC_SEARCH_SERVER = '54.68.196.78'
+ELASTIC_SEARCH_SERVER = 'localhost'
 ELASTIC_SEARCH_PORT = 9200
 ELASTIC_SEARCH_INDEX = 'talent-crawled'
 # Enable and configure the AutoThrottle extension (disabled by default)

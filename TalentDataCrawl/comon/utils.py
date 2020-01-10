@@ -49,6 +49,7 @@ def getTimeIso(time):
                 if len(date_detail[2]) <= 2:
                     date_detail[2] = "20" + date_detail[2]
                 date_string = "-".join(reversed(date_detail))
+                break
         for pattern in time_re:
             time_match = re.search(pattern[1], text)
             if time_match:
@@ -57,6 +58,7 @@ def getTimeIso(time):
                 if len(time_detail) <= 2:
                     time_detail.append("00")
                 time_string = ":".join(time_detail)
+                break
         return date_string + "T" + time_string + "Z"
     except Exception:
         return ""

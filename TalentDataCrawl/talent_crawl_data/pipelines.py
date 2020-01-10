@@ -5,7 +5,7 @@ from scrapy.utils.project import get_project_settings
 from talent_crawl_data.utils.TimeUtils import get_instance_time_iso_format
 from client_elasticsearch.MappingElasticSearch import MappingElasticSearch
 from client_elasticsearch.ElasticSearchUtils import ElasticSearchUtils
-from comon.constant import SERVER_HOST_NAME, create_client_elastic_search, talent_crawled_index
+from comon.constant import SERVER_HOST_NAME, LOCAL_HOST_NAME, create_client_elastic_search, talent_crawled_index
 
 
 class TalentCrawledDataPipeline(object):
@@ -24,12 +24,12 @@ class TalentCrawledDataPipeline(object):
             item["indexed_date"] = get_instance_time_iso_format()
             if "https://baomoi.com/404" != item['url']:
                 try:
-                    # self.es.index(index=self.settings['ELASTIC_SEARCH_INDEX'], id=index_id, body=dict(item))
-                    host = create_client_elastic_search(SERVER_HOST_NAME)
-                    host.index(index=talent_crawled_index, id=index_id, body=dict(item))
+                    self.es.index(index=self.settings['ELASTIC_SEARCH_INDEX'], id=index_id, body=dict(item))
+                    # host = create_client_elastic_search(SERVER_HOST_NAME)
+                    # host.index(index=talent_crawled_index, id=index_id, body=dict(item))
                 except elasticsearch.exceptions.NotFoundError:
-                    MappingElasticSearch.mappingIndicesToHost(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=SERVER_HOST_NAME)
-                    ElasticSearchUtils.settingMaxResultSearch(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=SERVER_HOST_NAME, max_result= 5000000)
+                    MappingElasticSearch.mappingIndicesToHost(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=LOCAL_HOST_NAME)
+                    ElasticSearchUtils.settingMaxResultSearch(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=LOCAL_HOST_NAME, max_result= 5000000)
             return item
         else:
             pass
