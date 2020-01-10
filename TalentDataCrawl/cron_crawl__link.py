@@ -20,7 +20,7 @@ command2 = "00 12 * * * python3 -m " + os.path.join(root_path, "run_data_pipelin
 job2 = cron.new(command=command2)
 
 command3 = "00 18 * * * python3 -m " + os.path.join(root_path, "run_evaluate")
-job3 = cron.new(command=command2)
+job3 = cron.new(command=command3)
 
 with open(os.path.join(root_path,"domain.json"), "r") as f:
     domains = json.load(f)["data"]
