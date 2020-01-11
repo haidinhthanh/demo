@@ -24,12 +24,12 @@ class TalentCrawledDataPipeline(object):
             item["indexed_date"] = get_instance_time_iso_format()
             if "https://baomoi.com/404" != item['url']:
                 try:
-                    self.es.index(index=self.settings['ELASTIC_SEARCH_INDEX'], id=index_id, body=dict(item))
-                    # host = create_client_elastic_search(SERVER_HOST_NAME)
-                    # host.index(index=talent_crawled_index, id=index_id, body=dict(item))
+                    # self.es.index(index=self.settings['ELASTIC_SEARCH_INDEX'], id=index_id, body=dict(item))
+                    host = create_client_elastic_search(SERVER_HOST_NAME)
+                    host.index(index=talent_crawled_index, id=index_id, body=dict(item))
                 except elasticsearch.exceptions.NotFoundError:
-                    MappingElasticSearch.mappingIndicesToHost(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=LOCAL_HOST_NAME)
-                    ElasticSearchUtils.settingMaxResultSearch(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=LOCAL_HOST_NAME, max_result= 5000000)
+                    MappingElasticSearch.mappingIndicesToHost(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=SERVER_HOST_NAME)
+                    ElasticSearchUtils.settingMaxResultSearch(index=self.settings['ELASTIC_SEARCH_INDEX'], host_type=SERVER_HOST_NAME, max_result= 5000000)
             return item
         else:
             pass
