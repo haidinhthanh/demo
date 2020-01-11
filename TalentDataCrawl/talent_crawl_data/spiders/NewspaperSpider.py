@@ -101,6 +101,7 @@ class NewspapersSpider(scrapy.Spider):
         item.add_value("source", source)
         item.add_value("published_date", published_date)
         item.add_value("images", images)
+        self.crawl_logger.info("crawl from link "+response.url)
         yield item.load_item()
 
     def mapDomainToXpath(self, domain):
