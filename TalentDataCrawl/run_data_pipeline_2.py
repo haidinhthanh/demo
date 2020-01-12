@@ -12,7 +12,7 @@ if __name__ == "__main__":
     pipeline_name = "data pipeline 2"
     crawled_source_news = [item['_source'] for item in crawled_news]
     host_type = SERVER_HOST_NAME
-    i = 0
+    i = 4000
     no_news_input = len(crawled_source_news)
     no_news_process = 0
     no_news_clean = 0
@@ -23,7 +23,7 @@ if __name__ == "__main__":
             pipeline = ProcessorPipeline2()
             processed_items = []
             if i > len(crawled_source_news):
-                for item in crawled_source_news[i - 5:len(crawled_source_news)]:
+                for item in crawled_source_news[i - 3:len(crawled_source_news)]:
                     logger.info("Process url: " + str(item["url"]))
                     new_item = process_news(item, pipeline, host_type, logger)
                     processed_items.append(item)

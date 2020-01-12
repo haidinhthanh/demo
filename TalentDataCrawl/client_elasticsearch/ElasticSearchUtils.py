@@ -19,8 +19,8 @@ class ElasticSearchUtils:
             "query": {
                 "range": {
                     "indexed_date": {
-                        "gte": "now-1d/d",
-                        "lte": "now/d"
+                        "gte": "2015-01-01T00:00:00Z",
+                        "lte": "2022-01-01T00:00:00Z"
                     }
                 }
             }
@@ -36,8 +36,8 @@ class ElasticSearchUtils:
                           body={"query": {
                               "range": {
                                   "indexed_date": {
-                                      "gte": "now-1d/d",
-                                      "lte": "now/d"
+                                      "gte": "2015-01-01T00:00:00Z",
+                                      "lte": "2022-01-01T00:00:00Z"
                                   }
                               }
                           },
@@ -126,9 +126,9 @@ class ElasticSearchUtils:
             return []
 
 #
-if __name__ == "__main__":
-    ElasticSearchUtils.settingMaxResultSearch(index="talent-crawled", host_type=LOCAL_HOST_NAME,
-                                              max_result=5000000)
-#
+# if __name__ == "__main__":
+#     # ElasticSearchUtils.settingMaxResultSearch(index="talent-crawled", host_type=LOCAL_HOST_NAME,
+#     #                                           max_result=5000000)
+# #
 #     ElasticSearchUtils.sendCrawledNewsFromHostToHost(from_host_type=LOCAL_HOST_NAME, to_host_type=SERVER_HOST_NAME,
-#                                                      from_index="talent-cleaned-e1", to_index="talent-cleaned-e1",logger=None)
+#                                                      from_index="talent-cleaned-e1", to_index="talent-cleaned-e1-v2",logger=None)
