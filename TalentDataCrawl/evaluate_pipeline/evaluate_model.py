@@ -125,7 +125,7 @@ class EvaluatePipeline:
         ElasticSearchUtils.sendCrawledNewsFromHostToHost(SERVER_HOST_NAME, SERVER_HOST_NAME,
                                                          elastic_search_index, talent_cleaned_index, self.logger)
 
-
-if __name__ == "__main__":
-    e = EvaluatePipeline()
-    e.resetDataProcessedPipeline()
+#
+# if __name__ == "__main__":
+#     e = EvaluatePipeline()
+#     e.resetDataProcessedPipeline()
