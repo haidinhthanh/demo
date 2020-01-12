@@ -19,8 +19,8 @@ class ElasticSearchUtils:
             "query": {
                 "range": {
                     "indexed_date": {
-                        "gte": "2015-01-01T00:00:00Z",
-                        "lte": "2022-01-01T00:00:00Z"
+                        "gte": "now-1d/d",
+                        "lte": "now/d"
                     }
                 }
             }
@@ -36,8 +36,8 @@ class ElasticSearchUtils:
                           body={"query": {
                               "range": {
                                   "indexed_date": {
-                                      "gte": "2015-01-01T00:00:00Z",
-                                      "lte": "2022-01-01T00:00:00Z"
+                                      "gte": "now-1d/d",
+                                      "lte": "now/d"
                                   }
                               }
                           },
