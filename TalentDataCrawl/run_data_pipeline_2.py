@@ -12,7 +12,7 @@ if __name__ == "__main__":
     pipeline_name = "data pipeline 2"
     crawled_source_news = [item['_source'] for item in crawled_news]
     host_type = SERVER_HOST_NAME
-    i = 4000
+    i = 0
     no_news_input = len(crawled_source_news)
     no_news_process = 0
     no_news_clean = 0
