@@ -25,6 +25,7 @@ class ProcessorPipeline1:
 
     def process(self, item):
         for processor in self.processors:
+            print("running")
             item = processor.process(item)
         return item
 

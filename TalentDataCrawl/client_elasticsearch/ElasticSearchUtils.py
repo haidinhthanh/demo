@@ -74,7 +74,8 @@ class ElasticSearchUtils:
 
     @staticmethod
     def getAllNewsFromHostInOneDay(index, host_type):
-        no_crawled_news = ElasticSearchUtils.getNumOfCrawledNewsInOneDay(host_type, index)
+        # no_crawled_news = ElasticSearchUtils.getNumOfCrawledNewsInOneDay(host_type, index)
+        no_crawled_news =1
         from_new_index = 0
         size_new_index = 100
         crawled_news = []

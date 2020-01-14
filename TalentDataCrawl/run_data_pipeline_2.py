@@ -22,8 +22,10 @@ if __name__ == "__main__":
         while True:
             pipeline = ProcessorPipeline2()
             processed_items = []
+            if i == len(crawled_source_news):
+                break
             if i > len(crawled_source_news):
-                for item in crawled_source_news[i - 3:len(crawled_source_news)]:
+                for item in crawled_source_news[i - 1:len(crawled_source_news)]:
                     logger.info("Process url: " + str(item["url"]))
                     new_item = process_news(item, pipeline, host_type, logger)
                     processed_items.append(item)
@@ -44,11 +46,13 @@ if __name__ == "__main__":
                 gc.collect()
                 break
             else:
-                for item in crawled_source_news[i:i + 3]:
+                print("running")
+                for item in crawled_source_news[i:i + 1]:
                     logger.info("Process url: " + str(item["url"]))
                     new_item = process_news(item, pipeline, host_type, logger)
                     processed_items.append(new_item)
                 no_news_process += len(processed_items)
+
                 logger.info("size processed data" + str(len(processed_items)))
                 clean_news = [item for item in processed_items
                               if ("processor_irrelevant" in item and "processor_duplicate" in item
@@ -63,7 +67,7 @@ if __name__ == "__main__":
                 del processed_items
                 del new_item
                 gc.collect()
-                i += 3
+                i += 1
         logger = LogService().configLogDataPipelineSummary(pipeline_name)
         logger.info("number of crawled news in day :" + str(no_news_input))
         logger.info("number of crawled news processed :" + str(no_news_process))
